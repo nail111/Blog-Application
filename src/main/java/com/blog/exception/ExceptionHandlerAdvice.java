@@ -12,4 +12,9 @@ public class ExceptionHandlerAdvice {
     public final ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException resourceNotFoundException) {
         return new ResponseEntity<>(resourceNotFoundException.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(value = BlogAPIException.class)
+    public final ResponseEntity<String> handleBlogAPIException(BlogAPIException blogAPIException) {
+        return new ResponseEntity<>(blogAPIException.getMessage(), blogAPIException.getStatus());
+    }
 }

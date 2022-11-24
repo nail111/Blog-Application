@@ -1,14 +1,18 @@
 package com.blog.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "posts", uniqueConstraints = {@UniqueConstraint(columnNames = "title")})
-@Data
+@Getter // We don't use @Data because of ModelMapper!!!
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Post {
@@ -24,4 +28,7 @@ public class Post {
 
     @Column(name = "content", nullable = false)
     private String content;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comment> comments = new HashSet<>();
 }
