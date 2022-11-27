@@ -1,11 +1,13 @@
 package com.blog.controller;
 
+import com.blog.dto.JWTAuthResponse;
 import com.blog.dto.LoginDto;
 import com.blog.dto.SignUpDto;
 import com.blog.model.Role;
 import com.blog.model.User;
 import com.blog.repo.RoleRepo;
 import com.blog.repo.UserRepo;
+import com.blog.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,8 @@ public class AuthController {
     private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
 
+    private final JwtTokenProvider tokenProvider;
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
@@ -40,7 +44,11 @@ public class AuthController {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return ResponseEntity.ok("User signed-in successfully");
+
+        // get token from tokenProvider
+        String token = tokenProvider.generateToken(authentication);
+
+        return ResponseEntity.ok(new JWTAuthResponse(token));
     }
 
     @PostMapping("/signup")
