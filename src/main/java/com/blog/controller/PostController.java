@@ -13,34 +13,39 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/posts")
+@RequestMapping
 public class PostController {
     private final PostService postService;
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
+    @PostMapping(value = "api/posts", headers = "X-API-VERSION=1")
     public ResponseEntity<?> createPost(@Valid @RequestBody PostDto postDto) {
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/{postId}")
+    @PutMapping(value = "api/posts/{postId}", headers = "X-API-VERSION=1")
     public ResponseEntity<?> updatePost(@PathVariable("postId") Long id, @Valid @RequestBody PostDto postDto) {
         return ResponseEntity.ok(postService.updatePost(id, postDto));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{postId}")
+    @DeleteMapping(value = "api/posts/{postId}", headers = "X-API-VERSION=1")
     public ResponseEntity<?> deletePost(@PathVariable("postId") Long id) {
         return ResponseEntity.ok(postService.deletePost(id));
     }
 
-    @GetMapping("/{postId}")
+    @GetMapping(value = "api/posts/{postId}", headers = "X-API-VERSION=1")
     public ResponseEntity<?> getPostById(@PathVariable("postId") Long id) {
         return ResponseEntity.ok(postService.getPostById(id));
     }
 
-    @GetMapping
+    @GetMapping(value = "api/posts/{postId}", headers = "X-API-VERSION=2")
+    public ResponseEntity<?> getPostByIdV2(@PathVariable("postId") Long id) {
+        return ResponseEntity.ok("This API is version 2");
+    }
+
+    @GetMapping(value = "api/posts", headers = "X-API-VERSION=1")
     public ResponseEntity<?> getAllPosts(
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,

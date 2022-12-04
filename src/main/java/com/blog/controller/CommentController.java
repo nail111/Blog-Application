@@ -11,7 +11,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/posts")
+@RequestMapping("api/v1/posts")
 public class CommentController {
     private final CommentService commentService;
 
