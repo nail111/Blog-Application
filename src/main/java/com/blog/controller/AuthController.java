@@ -8,6 +8,8 @@ import com.blog.model.User;
 import com.blog.repo.RoleRepo;
 import com.blog.repo.UserRepo;
 import com.blog.security.JwtTokenProvider;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,7 @@ import java.util.Collections;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
+@Api(value = "Auth controller exposes signin and signup REST APIs")
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserRepo userRepo;
@@ -35,6 +38,7 @@ public class AuthController {
     private final JwtTokenProvider tokenProvider;
 
     @PostMapping("/signin")
+    @ApiOperation(value = "REST API to register or signup user to Blog application")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -52,6 +56,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
+    @ApiOperation(value = "REST API to signin or login user to Blog application")
     public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
         if (userRepo.existsByUsername(signUpDto.getUsername())) {
             return new ResponseEntity<>("Username is already taken", HttpStatus.BAD_REQUEST);
