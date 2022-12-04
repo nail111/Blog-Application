@@ -1,5 +1,6 @@
 package com.blog.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.Set;
 public class PostDto {
 
     @ApiModelProperty(value = "Post id")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @NotEmpty
@@ -34,5 +36,6 @@ public class PostDto {
     private String content;
 
     @ApiModelProperty(value = "Post comments")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Set<CommentDto> comments;
 }
